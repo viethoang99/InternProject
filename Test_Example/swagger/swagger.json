@@ -1,0 +1,292 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/department/": {
+            "get": {
+                "tags": [
+                    "department"
+                ],
+                "description": "get all Departments",
+                "operationId": "DepartmentController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Department"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "department"
+                ],
+                "description": "update a Department",
+                "operationId": "DepartmentController.UpdateDepartment",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Department"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Department"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "department"
+                ],
+                "description": "add a new Department",
+                "operationId": "DepartmentController.AddDepartment",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Department"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Departments"
+                        }
+                    }
+                }
+            }
+        },
+        "/department/{Departmentid}": {
+            "get": {
+                "tags": [
+                    "department"
+                ],
+                "description": "Get user from department",
+                "operationId": "DepartmentController.GetUser",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "Departmentid",
+                        "description": "Department_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "403": {
+                        "description": "MaPhongBan is empty"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "department"
+                ],
+                "description": "delete a Department",
+                "operationId": "DepartmentController.DeleteDepartment",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "Departmentid",
+                        "description": "Department_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "MaSanPham is empty"
+                    }
+                }
+            }
+        },
+        "/department/{userid}": {
+            "get": {
+                "tags": [
+                    "department"
+                ],
+                "description": "Get user from same department",
+                "operationId": "DepartmentController.GetUserSame",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userid",
+                        "description": "Department_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "403": {
+                        "description": "MaNhanVien is empty"
+                    }
+                }
+            }
+        },
+        "/user/": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "description": "update a user",
+                "operationId": "UserController.UpdateUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "add a new user or users",
+                "operationId": "UserController.AddUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userid}": {
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "description": "delete a user",
+                "operationId": "UserController.DeleteUser",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userid",
+                        "description": "user_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "MaSanPham is empty"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Department": {
+            "title": "Department",
+            "type": "object",
+            "properties": {
+                "Department_id": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Departments": {
+            "title": "Departments",
+            "type": "object"
+        },
+        "models.User": {
+            "title": "User",
+            "type": "object",
+            "properties": {
+                "Department_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Users": {
+            "title": "Users",
+            "type": "object"
+        }
+    }
+}
