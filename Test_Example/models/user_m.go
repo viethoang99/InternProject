@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/OpenStars/EtcdBackendService/StringBigsetService/bigset/thrift/gen-go/openstars/core/bigset/generic"
-	"log"
 )
 
-const BS_Data = "QUANLY"
+const BS_Data = "NHANVIEN"
 type User struct {
 	User_id string `json:"user_id" xml:"user_id"`
 	Username string `json:"username" xml:"username"`
@@ -28,12 +27,9 @@ func (this *User) GetBsKey() generic.TStringKey{
 }
 
 func (this *User) GetAll() []User {
-	log.Println("GetAll()")
-	if totalCount, err := bigsetIf.GetTotalCount(this.GetBsKey()); err == nil {
-		slice, err := bigsetIf.BsGetSliceR(this.GetBsKey(), 0, int32(totalCount))
-		log.Println("---- models/user_m.go:33")
+	if total, err := bigsetIf.GetTotalCount(this.GetBsKey()); err == nil {
+		slice, err := bigsetIf.BsGetSliceR(this.GetBsKey(), 0, int32(total))
 		if err != nil {
-			log.Println("---- models/user_m.go:35")
 			return make([]User, 0)
 		}
 		transaction, err := this.UnMarshalArrayTItem(slice)
@@ -44,17 +40,59 @@ func (this *User) GetAll() []User {
 	}
 	return make([]User, 0)
 }
+var pagenumber =1
+func (this *User) GetAll1(pagesize int) []User {
+	if count, err := bigsetIf.GetTotalCount(this.GetBsKey()); err == nil {
+		slice, err := bigsetIf.BsGetSliceR(this.GetBsKey(), int32((pagenumber-1)*pagesize), int32(pagenumber*pagesize))
+		if err != nil {
+			return make([]User, 0)
+		}
+		module:=int(count) % pagesize
+		page:=int(count) / pagesize
+		if module!=0{
+			page=page+1
+		}
+		if pagenumber==page{
+			pagenumber=1
+		}else{
+			pagenumber++
+		}
+		transaction, err := this.UnMarshalArrayTItem(slice)
+		if err != nil {
+			println(err.Error(), "akjflaksjdf")
+		}
+		return transaction
+	}
 
-func (this *User) AddUser() error{
+	return make([]User, 0)
+}
+var dep Department
+func (this *User) AddUser() string{
+
+	depart:= dep.GetAll()
+	num:=0
+	for i:=0;i<len(depart);i++{
+		if depart[i].Department_id==this.Department_id {
+			num = 1
+			break
+		}
+	}
+	if num==0{
+		return "Khong ton tai phong ban"
+	}
 	bUser, id, err := MarshalBytes(this)
 	if err != nil {
-		return err
+		return "INTERNAL SERVER ERROR"
 	}
-	bigsetIf.BsPutItem(this.GetBsKey(), &generic.TItem{
+	err =bigsetIf.BsPutItem(this.GetBsKey(), &generic.TItem{
 		Key:   id,
 		Value: bUser,
 	})
-	return nil
+	if err==nil{
+		return "Them moi thanh cong"
+	}else{
+		return "INTERNAL SERVER ERROR"
+	}
 }
 func (this *User) Get() (interface{}, error) {
 
@@ -67,7 +105,7 @@ func (this *User) Get() (interface{}, error) {
 	return UnMarshalBytes(bytes)
 }
 func (this *User) PutItem() error {
-	bProd, key, err := MarshalBytes(this)
+	bUser, key, err := MarshalBytes(this)
 	if err != nil {
 		return err
 	}
@@ -77,7 +115,7 @@ func (this *User) PutItem() error {
 	}
 	return bigsetIf.BsPutItem(this.GetBsKey(), &generic.TItem{
 		Key:   key,
-		Value: bProd,
+		Value: bUser,
 	})
 }
 func (this *User) GetItemBytes() ([]byte, error) {

@@ -13,14 +13,13 @@ type UserController struct {
 }
 var userM models.User
 
-
 // @Title GetAll
 // @Description get all Users
 // @Success 200 {object} models.User
 // @router / [get]
 func (u *UserController) GetAll(){
 	defer u.ServeJSON()
-	users:=userM.GetAll()
+	users:=userM.GetAll1(3)
 	u.Data["json"]=users
 	return
 }
@@ -34,14 +33,8 @@ func (u *UserController) Post(){
 	json.Unmarshal(u.Ctx.Input.RequestBody, &userM)
 	err:=userM.AddUser()
 	defer u.ServeJSON()
-	if err != nil {
-		log.Println("========== controllers/user.go:38")
-		u.Data["json"] = err
-		return
-	}
-
-	users:=userM.GetAll()
-	u.Data["json"]=users
+	//users:=userM.GetAll()
+	u.Data["json"]=err
 	return
 }
 
@@ -81,3 +74,5 @@ func (u *UserController) Delete() {
 	u.Data["json"] = "delete success!"
 	return
 }
+
+

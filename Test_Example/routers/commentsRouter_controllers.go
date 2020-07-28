@@ -37,7 +37,7 @@ func init() {
     beego.GlobalControllerRouter["Test_Example/controllers:DepartmentController"] = append(beego.GlobalControllerRouter["Test_Example/controllers:DepartmentController"],
         beego.ControllerComments{
             Method: "Delete",
-            Router: "/:Departmentid",
+            Router: "/",
             AllowHTTPMethods: []string{"delete"},
             MethodParams: param.Make(),
             Filters: nil,
@@ -57,6 +57,15 @@ func init() {
             Method: "GetUsersSame",
             Router: "/:userid",
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["Test_Example/controllers:DepartmentController"] = append(beego.GlobalControllerRouter["Test_Example/controllers:DepartmentController"],
+        beego.ControllerComments{
+            Method: "UpdateUserFromDepartment",
+            Router: "/updateuserdepartment",
+            AllowHTTPMethods: []string{"put"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

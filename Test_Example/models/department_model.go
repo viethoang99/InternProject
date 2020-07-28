@@ -109,4 +109,29 @@ func (this *Department) Delete() error {
 	return bigsetIf.BsRemoveItem(this.GetBsKey(), generic.TItemKey(t))
 }
 
+func (this *Department) UpdateUser(u User) string{
+	user,_:=bigsetIf.BsGetItem(u.GetBsKey(), generic.TItemKey(u.User_id))
+	obj:=User{}
+	err:=json.Unmarshal(user.GetValue(),&obj)
+	if err!=nil{
+		return "INTERNAL SERVER ERROR"
+	}
+	obj.Department_id=u.Department_id
+	bNewUser, key, err := MarshalBytes1(obj.User_id,obj)
+	if err != nil {
+		return "Loi"
+	}
+	if err != nil {
+		return "Loi"
+	}
+	err1:= bigsetIf.BsPutItem(u.GetBsKey(), &generic.TItem{
+		Key:   key,
+		Value: bNewUser,
+	})
+	if err1!=nil{
+		return "INTERNAL SERVER ERROR"
+	}else{
+		return "SUCCESS"
+	}
+}
 

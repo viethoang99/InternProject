@@ -1,39 +1,46 @@
-package test
+package testing
 
 import (
-	"net/http"
-	"net/http/httptest"
-	"testing"
-	"runtime"
-	"path/filepath"
-	_ "Test_Example/routers"
-
-	"github.com/astaxie/beego"
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/astaxie/beego/config"
+	"github.com/astaxie/beego/httplib"
 )
 
-func init() {
-	_, file, _, _ := runtime.Caller(0)
-	apppath, _ := filepath.Abs(filepath.Dir(filepath.Join(file, ".." + string(filepath.Separator))))
-	beego.TestBeegoInit(apppath)
+var port = ""
+var baseURL = "http://localhost:"
+
+// TestHTTPRequest beego test request client
+type TestHTTPRequest struct {
+	httplib.BeegoHTTPRequest
 }
 
-
-// TestBeego is a sample to run an endpoint test
-func TestBeego(t *testing.T) {
-	r, _ := http.NewRequest("GET", "/", nil)
-	w := httptest.NewRecorder()
-	beego.BeeApp.Handlers.ServeHTTP(w, r)
-
-	beego.Trace("testing", "TestBeego", "Code[%d]\n%s", w.Code, w.Body.String())
-
-	Convey("Subject: Test Station Endpoint\n", t, func() {
-	        Convey("Status Code Should Be 200", func() {
-	                So(w.Code, ShouldEqual, 200)
-	        })
-	        Convey("The Result Should Not Be Empty", func() {
-	                So(w.Body.Len(), ShouldBeGreaterThan, 0)
-	        })
-	})
+func getPort() string {
+	if port == "" {
+		config, err := config.NewConfig("ini", "/home/hoangviet/go/src/Test_Example/conf/app.conf")
+		if err != nil {
+			return "8081"
+		}
+		port = config.String("httpport")
+		return port
+	}
+	return port
 }
 
+// Get returns test client in GET method
+func Get(path string) *TestHTTPRequest {
+	return &TestHTTPRequest{*httplib.Get(baseURL + getPort() + path)}
+}
+
+// Post returns test client in POST method
+func Post(path string) *TestHTTPRequest {
+	return &TestHTTPRequest{*httplib.Post(baseURL + getPort() + path)}
+}
+
+// Put returns test client in PUT method
+func Put(path string) *TestHTTPRequest {
+	return &TestHTTPRequest{*httplib.Put(baseURL + getPort() + path)}
+}
+
+// Delete returns test client in DELETE method
+func Delete(path string) *TestHTTPRequest {
+	return &TestHTTPRequest{*httplib.Delete(baseURL + getPort() + path)}
+}

@@ -62,4 +62,20 @@ func MarshalBytes(object interface{}) ([]byte, []byte, error) {
 
 	return obj, key, nil
 }
+func MarshalBytes1(id string,object interface{}) ([]byte, []byte, error) {
+	var key []byte
+	if object == nil {
+		return nil, nil, errors.New("object must be not nil")
+	}
 
+	obj, err := json.Marshal(object)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	key = []byte(id)
+	test := fmt.Sprintf("%v", object)
+	log.Println(test, "-- test")
+
+	return obj, key, nil
+}

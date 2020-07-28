@@ -63,14 +63,14 @@ func (u *DepartmentController) Put(){
 // @Description delete a Department
 // @Param	Departmentid		path 	string	true "Department_id"
 // @Success 200 {string} delete success!
-// @Failure 403 MaSanPham is empty
-// @router /:Departmentid [delete]
+// @Failure 403 MaPhong Ban is empty
+// @router / [delete]
 func (u *DepartmentController) Delete() {
-	id := u.GetString(":Departmentid")
+	id := u.GetString("Departmentid")
 	DepartmentM.Department_id=id
 	err := DepartmentM.Delete()
 	defer u.ServeJSON()
-	if err == nil {
+	if err != nil {
 		u.Data["json"] = "Lỗi"
 		log.Println("err",err)
 		return
@@ -106,7 +106,7 @@ func (u *DepartmentController) GetUsers() {
 
 // @Title GetUserSame
 // @Description Get user from same department
-// @Param	userid		path 	string	true "Department_id"
+// @Param	userid		path 	string	true "user_id"
 // @Success 200 {object} models.User
 // @Failure 403 MaNhanVien is empty
 // @router /:userid [get]
@@ -129,3 +129,23 @@ func (u *DepartmentController) GetUsersSame() {
 	}
 	return
 }
+
+// @Title DeleteUserFromDepartment
+// @Description xoa nguoi dung cua mot phong ban
+// @Param   userid    query   string false       "user_id"
+// @Param   departmentid    query   string false       "department_id"
+// @Success 200 string xoa thanh cong
+// @Failure 403 INTERNAL SERVER ERROR
+// @router /updateuserdepartment [put]
+func (u *DepartmentController) UpdateUserFromDepartment() {
+	defer u.ServeJSON()
+	var user_id,newdep_id string
+	u.Ctx.Input.Bind(&user_id, "userid")
+	u.Ctx.Input.Bind(&newdep_id, "departmentid")
+	userM.User_id = user_id
+	userM.Department_id = newdep_id
+	string := DepartmentM.UpdateUser(userM)
+	u.Data["json"] = string
+}
+
+

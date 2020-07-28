@@ -10,17 +10,17 @@ import (
 func handleClient(client *tutorial.UserServiceClient) (err error) {
 	client.Ping(context.Background())
 	fmt.Println("ping......")
-	//khai bao user
+	////khai bao user
 	user:=tutorial.NewUser()
 	user.UserID="a_1234"
-	user.Username="Hoang Viet Van Hoang"
-	user.DepartmentID="3"
-	//them user
-	s,err := client.AddUser(context.Background(),user)
-	fmt.Println(s)
-	//sua user
-	s1,err:=client.Put(context.Background(),user)
-	fmt.Println(s1)
+	//user.Username="Hoang...................."
+	//user.DepartmentID="3"
+	//////them user
+	////s,err := client.AddUser(context.Background(),user)
+	////fmt.Println(s)
+	////sua user
+	//s1,err:=client.Put(context.Background(),user)
+	//fmt.Println(s1)
 	//Delete
 	s2,err:=client.Delete(context.Background(),user.UserID)
 	fmt.Println(s2)

@@ -47,6 +47,22 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/models.Departments'
+    delete:
+      tags:
+      - department
+      description: delete a Department
+      operationId: DepartmentController.DeleteDepartment
+      parameters:
+      - in: path
+        name: Departmentid
+        description: Department_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: MaPhong Ban is empty
   /department/{Departmentid}:
     get:
       tags:
@@ -66,22 +82,6 @@ paths:
             $ref: '#/definitions/models.User'
         "403":
           description: MaPhongBan is empty
-    delete:
-      tags:
-      - department
-      description: delete a Department
-      operationId: DepartmentController.DeleteDepartment
-      parameters:
-      - in: path
-        name: Departmentid
-        description: Department_id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: MaSanPham is empty
   /department/{userid}:
     get:
       tags:
@@ -91,7 +91,7 @@ paths:
       parameters:
       - in: path
         name: userid
-        description: Department_id
+        description: user_id
         required: true
         type: string
       responses:
@@ -101,6 +101,26 @@ paths:
             $ref: '#/definitions/models.User'
         "403":
           description: MaNhanVien is empty
+  /department/updateuserdepartment:
+    put:
+      tags:
+      - department
+      description: xoa nguoi dung cua mot phong ban
+      operationId: DepartmentController.DeleteUserFromDepartment
+      parameters:
+      - in: query
+        name: userid
+        description: user_id
+        type: string
+      - in: query
+        name: departmentid
+        description: department_id
+        type: string
+      responses:
+        "200":
+          description: string xoa thanh cong
+        "403":
+          description: INTERNAL SERVER ERROR
   /user/:
     get:
       tags:
